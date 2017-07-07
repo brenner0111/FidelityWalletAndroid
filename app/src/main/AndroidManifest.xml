@@ -26,7 +26,15 @@
         <activity
             android:name=".HomePageActivity"
             android:label="@string/title_activity_home_page"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SendActivity"
+            android:label="@string/title_activity_send" />
+        <activity
+            android:name=".RequestActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_request"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>
