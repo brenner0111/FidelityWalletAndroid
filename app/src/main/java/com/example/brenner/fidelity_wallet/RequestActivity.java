@@ -1,12 +1,14 @@
 package com.example.brenner.fidelity_wallet;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -105,7 +107,18 @@ public class RequestActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        findViewById(R.id.home_button).setOnTouchListener(mDelayHideTouchListener);
+        Button homeButton = (Button) findViewById(R.id.home_button);
+        homeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                homePage(v);
+            }
+        });
+    }
+    protected void homePage(View v){
+        Intent homePage = new Intent(this, HomePageActivity.class);
+        startActivity(homePage);
     }
 
     @Override
