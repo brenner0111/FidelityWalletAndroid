@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,11 +30,22 @@ public class RequestActivity extends AppCompatActivity {
                 homePage(v);
             }
         });
+        Button requestButton = (Button) findViewById(R.id.requestBtn);
+        requestButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                attemptRequest();
+            }
+        });
     }
     protected void homePage(View v){
         Intent homePage = new Intent(this, HomePageActivity.class);
         startActivity(homePage);
     }
 
+    private void attemptRequest(){
+        //POST-REQUEST
+        //Log.d("", "requestBtn working");
+    }
 
 }

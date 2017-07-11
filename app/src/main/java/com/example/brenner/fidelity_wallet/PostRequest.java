@@ -1,6 +1,8 @@
 package com.example.brenner.fidelity_wallet;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 
@@ -18,15 +20,30 @@ import okhttp3.FormBody;
 public class PostRequest {
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
-
     private OkHttpClient client = new OkHttpClient();
-    String postLogin(String userName, String passWord) throws IOException {
+    String fileName = "C:\\Users\\Brenner\\AndroidStudioProjects\\Fidelity_Wallet\\secretKey.txt";
+    File file = new File(fileName);
+    FileWriter writer;
+
+    public PostRequest(){
+
+    }
+    /*
+    Method to handle post request for logging in
+     */
+    public String postLogin(String userName, String passWord) throws IOException {
+        try{
+            writer = new FileWriter(file);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        String secretKey = "";
         FormBody.Builder bodyBuilder = new FormBody.Builder()
                 .add("username", userName)
                 .add("password", passWord);
         RequestBody body = bodyBuilder.build();
         Request request = new Request.Builder()
-                .url("blah/api/login")
+                .url("/api/login/http://fidwallet.herokuapp.com/user/login")
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();
@@ -36,15 +53,26 @@ public class PostRequest {
         }
         try{
             JSONObject mainObj = new JSONObject(response.body().string());
-            return mainObj.getString("secretkey");
+            secretKey = mainObj.getString("secretkey");
+            writer.append(secretKey);
+            return secretKey;
         }
         catch (Exception e){
             e.printStackTrace();
         }
         return response.body().string();
     }
-    String postSendMoney(String type, String username, String amount, String secretkey) throws IOException{
+    /*
+    Method for handling post request for sending money to another user
+     */
+    public String postSendMoney(String type, String username, String amount, String secretkey) throws IOException{
         //TODO post request for sending money
+        return "";
+    }
+    /*
+    Method for handling post request for getting users current balance
+     */
+    public String postGetCurrBalance(String secretKey){
         return "";
     }
 

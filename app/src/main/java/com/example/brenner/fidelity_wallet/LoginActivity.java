@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private View homePageView;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+    public String getKey(){
+        return key;
+    }
+    public void setKey(String k){
+        key = k;
     }
     public void homePageActivity(View view) {
         Intent homePage = new Intent(this, HomePageActivity.class);
@@ -150,6 +158,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
+        PostRequest post = new PostRequest();
         if (mAuthTask != null) {
             return;
         }
@@ -161,6 +170,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+
+        try{
+            setKey(post.postLogin(email,password));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        //Log.d("SECRET KEY: ", getKey());
 
         boolean cancel = false;
         View focusView = null;
@@ -199,12 +215,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.contains("");
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() >= 4;
     }
 
     /**
