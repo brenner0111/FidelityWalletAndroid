@@ -34,7 +34,7 @@
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:title="@string/home_button"
         app:titleMargin="@dimen/activity_horizontal_margin"
-        app:titleTextAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:titleTextAppearance="@style/Platform.V25.AppCompat"
         app:titleTextColor="@android:color/black" />
 
 </android.support.design.widget.CoordinatorLayout>
