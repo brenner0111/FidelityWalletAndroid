@@ -44,7 +44,7 @@ public class HomePageActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Instant Messenger Coming Soon!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -92,6 +92,11 @@ public class HomePageActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            PostRequest postObj = new PostRequest();
+            //reset secretKey
+            postObj.setSecretKey(null);
+            Intent loginPage = new Intent(this, LoginActivity.class);
+            startActivity(loginPage);
             return true;
         }
 

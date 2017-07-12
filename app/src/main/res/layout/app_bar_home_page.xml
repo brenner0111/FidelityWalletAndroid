@@ -13,7 +13,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_home_page" />
+    <include layout="@layout/content_home_page"
+        android:id="@+id/include3" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -26,15 +27,24 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:background="@color/FidelityGreen"
         android:contextClickable="false"
         android:textAlignment="center"
         android:textDirection="ltr"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:title="@string/home_button"
+        app:title="Fidelity Wallet"
         app:titleMargin="@dimen/activity_horizontal_margin"
-        app:titleTextAppearance="@style/Platform.V25.AppCompat"
-        app:titleTextColor="@android:color/black" />
+        app:titleTextAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        app:titleTextColor="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="60dp"
+        android:layout_height="59dp"
+        android:layout_gravity="bottom|right"
+        app:layout_anchor="@+id/include3"
+        app:layout_anchorGravity="top|center_horizontal"
+        app:srcCompat="@mipmap/fidwallet" />
 
 </android.support.design.widget.CoordinatorLayout>

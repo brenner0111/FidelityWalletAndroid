@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,12 +66,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private View homePageView;
-    private String key;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -97,12 +101,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
-    public String getKey(){
+   /* public String getKey(){
         return key;
     }
+
     public void setKey(String k){
         key = k;
-    }
+    }*/
+
     public void homePageActivity(View view) {
         Intent homePage = new Intent(this, HomePageActivity.class);
         startActivity(homePage);
@@ -150,14 +156,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
     }
+    /*private class RetievePostRequest extends AsyncTask<URL, Integer, Long>{
+        protected Long doInBackground(URL... urls) {
+            int count = urls.length;
+            long totalSize = 0;
+            for (int i = 0; i < count; i++) {
+                totalSize += Downloader.downloadFile(urls[i]);
+                publishProgress((int) ((i / (float) count) * 100));
+                // Escape early if cancel() is called
+                if (isCancelled()) break;
+            }
+            return totalSize;
+        }
 
+        protected void onProgressUpdate(Integer... progress) {
+            //setProgressPercent(progress[0]);
+        }
 
+        protected void onPostExecute(Long result) {
+            //showDialog("Downloaded " + result + " bytes");
+        }
+    }
+*/
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
+        String key = "";
         PostRequest post = new PostRequest();
         if (mAuthTask != null) {
             return;
@@ -172,7 +199,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String password = mPasswordView.getText().toString();
 
         try{
-            setKey(post.postLogin(email,password));
+            //new RetievePostRequest().execute();
+            key = post.postLogin(email,password);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -206,10 +234,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            homePageActivity(homePageView);
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            if (key != null){
+                homePageActivity(homePageView);
+                showProgress(true);
+                mAuthTask = new UserLoginTask(email, password);
+                mAuthTask.execute((Void) null);
+            }
+            else{
+                Log.d("DEBUG ", "Login fails - Key equals NULL");
+            }
+
         }
     }
 
