@@ -31,6 +31,9 @@ public class PostRequest{
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client = new OkHttpClient();
     private static String secretKey;
+    private int amount;
+    private String balance;
+    private String status;
     //private String fileName = "C:\\Users\\Brenner\\AndroidStudioProjects\\Fidelity_Wallet\\secretKey.txt";
     //private File file = new File(fileName);
     //private FileWriter writer;
@@ -41,18 +44,13 @@ public class PostRequest{
     public void setSecretKey(String k){
         secretKey = k;
     }
-    public String getSecretKey(String k){
+    public String getSecretKey(){
         return secretKey;
     }
     /*
     Method to handle post request for logging in
      */
     public String postLogin(String userName, String passWord) throws IOException {
-        /*try{
-            writer = new FileWriter(file);
-        }catch(Exception e){
-            e.printStackTrace();
-        }*/
 
         FormBody.Builder bodyBuilder = new FormBody.Builder()
                 .add("username", userName)
@@ -72,32 +70,130 @@ public class PostRequest{
         }
         else{
             Log.d("DEBUG: ","PostRequest was successful");
+            try{
+                JSONObject mainObj = new JSONObject(response.body().string());
+                setSecretKey(mainObj.getString("secretkey"));
+                Log.d("We're Returning: ", secretKey);
+                return secretKey;
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
-        try{
-            //Log.d("DEBUG ", response.body().string());
-            JSONObject mainObj = new JSONObject(response.body().string());
-            setSecretKey(mainObj.getString("secretkey"));
-            //writer.append(secretKey);
-            Log.d("We're Returning: ", secretKey);
-            return secretKey;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+
         return null;
     }
     /*
     Method for handling post request for sending money to another user
      */
-    public String postSendMoney(String type, String username, String amount, String secretkey) throws IOException{
+    public void postSendMoney(String secretkey, String username, String amount_) throws IOException{
         //TODO post request for sending money
-        return "";
+
+        FormBody.Builder bodyBuilder = new FormBody.Builder()
+                .add("secretkey", secretkey)
+                .add("type", "send")
+                .add("username", username)
+                .add("amount", amount_);
+        RequestBody body = bodyBuilder.build();
+        Request request = new Request.Builder()
+                //.url("http://fidwallet.herokuapp.com/api/login")
+                // for balance send just the secret key
+                //.url("http://fidwallet.herokuapp.com/api/balance")
+                //send just the secretkey, type(send || request), username
+                .url("http://fidwallet.herokuapp.com/api/sendMoney")
+                .post(body)
+                .build();
+        Log.d("DEBUG: ", "attempting Post Request");
+        Response response = client.newCall(request).execute();
+        //TODO what to do if not successful
+        if(!response.isSuccessful()){
+            Log.d("DEBUG: ", "PostRequest was not successful");
+        }
+        else{
+            Log.d("DEBUG: ","PostRequest was successful");
+            try{
+                JSONObject mainObj = new JSONObject(response.body().string());
+                status = mainObj.getString("status");
+                Log.d("DEBUG","postSendMoney Status: " + status);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+    /*
+   Method for handling post request for sending money to another user
+    */
+    public void postRequestMoney(String secretkey, String username, String amount_) throws IOException{
+        //TODO post request for sending money
+
+        FormBody.Builder bodyBuilder = new FormBody.Builder()
+                .add("secretkey", secretkey)
+                .add("type", "request")
+                .add("username", username)
+                .add("amount", amount_);
+        RequestBody body = bodyBuilder.build();
+        Request request = new Request.Builder()
+                //.url("http://fidwallet.herokuapp.com/api/login")
+                // for balance send just the secret key
+                //.url("http://fidwallet.herokuapp.com/api/balance")
+                //send just the secretkey, type(send || request), username
+                .url("http://fidwallet.herokuapp.com/api/sendMoney")
+                .post(body)
+                .build();
+        Log.d("DEBUG: ", "attempting Post Request");
+        Response response = client.newCall(request).execute();
+        //TODO what to do if not successful
+        if(!response.isSuccessful()){
+            Log.d("DEBUG: ", "PostRequest was not successful");
+        }
+        else{
+            Log.d("DEBUG: ","PostRequest was successful");
+            try{
+                JSONObject mainObj = new JSONObject(response.body().string());
+                //TODO: what is the key so that we can get the amount?
+                status = mainObj.getString("status");
+                Log.d("DEBUG ", "postRequestMoney Status: " + status);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
     /*
     Method for handling post request for getting users current balance
      */
-    public String postGetCurrBalance(String secretKey){
-        return "";
+    public String postGetCurrBalance(String secretKey)throws IOException{
+        Log.d("DEBUG ", "Secretkey -> getCurrBal " + secretKey);
+        FormBody.Builder bodyBuilder = new FormBody.Builder()
+                .add("secretkey", secretKey);
+        RequestBody body = bodyBuilder.build();
+        Request request = new Request.Builder()
+                //.url("http://fidwallet.herokuapp.com/api/login")
+                //for balance send just the secret key
+                .url("http://fidwallet.herokuapp.com/api/balance")
+                //.url("http://fidwallet.herokuapp.com/api/sendMoney") send just the secretkey, type(send || request), username
+                .post(body)
+                .build();
+        Log.d("DEBUG: ", "attempting Post Request");
+        Response response = client.newCall(request).execute();
+        //TODO what to do if not successful
+        if(!response.isSuccessful()){
+            Log.d("DEBUG: ", "PostRequest was not successful");
+        }
+        else{
+            Log.d("DEBUG: ","PostRequest was successful");
+            try{
+                JSONObject mainObj = new JSONObject(response.body().string());
+                balance = mainObj.getString("balance");
+                Log.d("We're Returning: ", balance);
+                return balance;
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

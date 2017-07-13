@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#0099cc"
     tools:context="com.example.brenner.fidelity_wallet.SendActivity">
 
@@ -27,6 +28,8 @@
         android:background="@android:color/background_light"
         android:fitsSystemWindows="true">
 
+
+
         <ScrollView
             android:id="@+id/login_form"
             android:layout_width="match_parent"
@@ -39,12 +42,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="431dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/FidelityGreen"
+                    android:contextClickable="false"
+                    android:textAlignment="center"
+                    android:textDirection="ltr"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:title="Fidelity Wallet"
+                    app:titleMargin="@dimen/activity_horizontal_margin"
+                    app:titleTextAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    app:titleTextColor="@android:color/white"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <AutoCompleteTextView
-                        android:id="@+id/email"
+                        android:id="@+id/usersend"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Username/E-mail"
@@ -59,14 +79,14 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/password"
+                        android:id="@+id/amountsend"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Amount"
                         android:imeActionId="@+id/login"
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
+                        android:inputType="numberDecimal"
                         android:maxLines="1"
                         android:singleLine="true" />
 
@@ -80,6 +100,7 @@
                     android:layout_marginTop="16dp"
                     android:background="@color/FidelityGreen"
                     android:text="Send Money"
+                    android:textColor="@android:color/background_light"
                     android:textStyle="bold"
                     tools:text="Send Money" />
 
@@ -105,7 +126,7 @@
                 android:background="@color/FidelityGreen"
                 android:contextClickable="false"
                 android:text="@string/home_button"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textColorLink="@android:color/black" />
 
         </LinearLayout>

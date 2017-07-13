@@ -15,16 +15,28 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.io.IOException;
 
 public class HomePageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        PostRequest postRequest = new PostRequest();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //BALANCE
+        TextView textView = (TextView) findViewById(R.id.balance);
+        try{
+            textView.setText("$" + postRequest.postGetCurrBalance(postRequest.getSecretKey()));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         //BUTTONS
         Button sendButton = (Button) findViewById(R.id.button);
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -109,11 +121,11 @@ public class HomePageActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_account) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_security) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_notifications) {
 
         } else if (id == R.id.nav_manage) {
 
